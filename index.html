@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification | Punjab Board of Technical Education</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400&display=swap" rel="stylesheet">
+    
+    <style type="text/css">
+        body { font-family: 'Bitter', serif; font-weight: 400; background-color: #f4f7f9; margin: 0; padding: 0; color: #333; }
+        
+        /* Header Section */
+        header { background: #fff; text-align: center; padding: 10px 0; border-bottom: 2px solid #010169; }
+        .header-img { width: 100%; max-width: 950px; height: auto; }
+
+        /* News Bar */
+        .news-bar { background: #fff; padding: 8px 50px; text-align: right; font-size: 13px; font-weight: 600; }
+        .news-bar a { text-decoration: none; color: #010169; margin-left: 15px; }
+        .news-tag { background: #ffff99; padding: 3px 8px; font-style: italic; border: 1px solid #ddd; }
+
+        /* Navigation Menu - Bitter Plain, Sentence Case */
+        nav { background: #010169; display: flex; justify-content: center; padding: 12px 0; font-family: 'Bitter', serif; }
+        nav a { color: white; text-decoration: none; padding: 0 20px; font-size: 16px; font-weight: 400; text-transform: none; letter-spacing: 0.2px; border-right: 1px solid #ffffff66; }
+        nav a:last-child { border-right: none; }
+        nav a:hover { color: #ffcc00; }
+
+        .page-title { text-align: center; padding: 30px 0; color: #cc7a00; font-size: 26px; font-weight: bold; background: #fff; border-bottom: 1px solid #ddd; }
+        
+        .container { max-width: 900px; margin: 30px auto; padding: 0 15px; }
+        .form-card { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .form-group { display: flex; align-items: center; margin-bottom: 18px; }
+        .form-label { width: 220px; font-weight: 400; font-size: 15px; color: #333; }
+        .form-field { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 3px; font-family: 'Bitter', serif; font-size: 15px; }
+        
+        .captcha-row { display: flex; align-items: center; gap: 15px; margin-top: 10px; }
+        .captcha-img { background: #e9ecef; padding: 10px 25px; border: 1px dashed #010169; font-family: 'Courier New', monospace; font-weight: bold; font-size: 22px; color: #010169; letter-spacing: 4px; user-select: none; }
+        
+        .btn-row { text-align: center; margin-top: 35px; border-top: 1px solid #eee; padding-top: 25px; }
+        .btn-view, .btn-reset { background: #010169; color: white; border: none; padding: 12px 35px; font-weight: bold; cursor: pointer; border-radius: 3px; font-family: 'Bitter', serif; }
+        .btn-reset { background: #6c757d; margin-left: 10px; }
+        
+        /* Result Display */
+        .result-card { display: none; margin-top: 30px; background: #fff; border: 1px solid #010169; border-radius: 4px; overflow: hidden; }
+        .result-head { background: #010169; color: white; padding: 12px; text-align: center; font-weight: bold; }
+        .result-content { display: flex; padding: 25px; gap: 25px; }
+        .info-table { flex: 1; border-collapse: collapse; }
+        .info-table td { padding: 12px; border-bottom: 1px solid #eee; font-size: 15px; }
+        .lbl { font-weight: bold; color: #555; width: 180px; }
+        .photo-area { width: 150px; text-align: center; border-left: 1px solid #eee; padding-left: 20px; }
+        .photo-area img { width: 130px; height: 160px; border: 2px solid #010169; object-fit: cover; }
+        
+        footer { background: #010169; color: white; text-align: center; padding: 25px; margin-top: 60px; font-size: 13px; font-family: sans-serif; }
+    </style>
+</head>
+<body onload="generateCaptcha()">
+
+    <header>
+        <img src="https://www.pbte.edu.pk/images/header.jpg" class="header-img" alt="PBTE Header">
+    </header>
+
+    <div class="news-bar">
+        <span class="news-tag">News & Updates</span>
+        <a href="#">Job Placement</a> <a href="#">Contact Us</a> <a href="#">Downloads</a> <a href="#">Feed Back</a>
+    </div>
+
+    <nav>
+        <a href="#">Home »</a>
+        <a href="#">Institutes »</a>
+        <a href="#">Examination »</a>
+        <a href="#">Verification »</a>
+        <a href="#">Challan</a>
+        <a href="#">Academics »</a>
+        <a href="#">Services »</a>
+    </nav>
+
+    <div class="page-title">Verification of Diploma / Certificates</div>
+
+    <div class="container">
+        <div class="form-card">
+            <div class="form-group">
+                <label class="form-label">Passing Year</label>
+                <select class="form-field" id="passYear">
+                    <option value="">-- Select Year --</option>
+                    <script>
+                        for(let y=2026; y>=2000; y--) { document.write(`<option value="${y}">${y}</option>`); }
+                    </script>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Roll Number</label>
+                <input type="text" id="rollInput" class="form-field" placeholder="Enter Roll Number">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Verification Code</label>
+                <div style="flex:1;">
+                    <div class="captcha-row">
+                        <div class="captcha-img" id="captchaBox">Loading...</div>
+                        <input type="text" id="captchaInput" class="form-field" style="max-width: 150px;" placeholder="Type Code">
+                    </div>
+                </div>
+            </div>
+            <div class="btn-row">
+                <button class="btn-view" onclick="processVerification()">View Result</button>
+                <button class="btn-reset" onclick="resetForm()">Reset</button>
+            </div>
+        </div>
+
+        <div id="resultBox" class="result-card">
+            <div class="result-head">STUDENT VERIFICATION DETAIL</div>
+            <div class="result-content">
+                <table class="info-table">
+                    <tr><td class="lbl">Student Name:</td><td id="resName"></td></tr>
+                    <tr><td class="lbl">Father Name:</td><td id="resFather"></td></tr>
+                    <tr><td class="lbl">Technology:</td><td id="resTech"></td></tr>
+                    <tr><td class="lbl">Passing Year:</td><td id="resYear"></td></tr>
+                    <tr><td class="lbl">Institute:</td><td id="resInst"></td></tr>
+                    <tr><td class="lbl">Obtained Marks:</td><td id="resMarks"></td></tr>
+                    <tr><td class="lbl">Result Status:</td><td id="resStatus" style="font-weight:bold; color:green;"></td></tr>
+                </table>
+                <div class="photo-area">
+                    <img id="resPhoto" src="" alt="Student Photo">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Punjab Board of Technical Education, 21-A Kashmir Block, Allama Iqbal Town, Lahore.<br>
+        © 2026 Developed by IT Wing PBTE
+    </footer>
+
+    <script>
+        function generateCaptcha() {
+            const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let code = "";
+            for (let i = 0; i < 6; i++) { code += chars.charAt(Math.floor(Math.random() * chars.length)); }
+            document.getElementById("captchaBox").innerText = code;
+        }
+
+        function resetForm() {
+            document.getElementById('passYear').value = "";
+            document.getElementById('rollInput').value = "";
+            document.getElementById('captchaInput').value = "";
+            document.getElementById('resultBox').style.display = 'none';
+            generateCaptcha();
+        }
+
+        const studentDatabase = {
+            "701298": {
+                name: "SHAFQAT ALI", father: "SHOUKAT ALI", tech: "Mechanical",
+                passingYear: "2024", inst: "GCT Lahore", marks: "2950 / 3550",
+                status: "PASS (VERIFIED)", photo: "https://image2url.com/r2/default/images/1772842121430-7e03d18c-93f2-4ebe-8db0-dd2f1786c62a.jpeg"
+            }
+        };
+
+        function processVerification() {
+            const roll = document.getElementById('rollInput').value;
+            const year = document.getElementById('passYear').value;
+            const userInput = document.getElementById('captchaInput').value.toUpperCase();
+            const actualCode = document.getElementById('captchaBox').innerText;
+            const resultBox = document.getElementById('resultBox');
+
+            if (year === "" || roll === "" || userInput === "") { alert("Please fill all fields!"); return; }
+            if (userInput !== actualCode) { alert("Invalid Verification Code!"); generateCaptcha(); document.getElementById('captchaInput').value = ""; return; }
+
+            if (studentDatabase[roll]) {
+                const s = studentDatabase[roll];
+                if (s.passingYear !== year) { alert("Error: Passing Year does not match with the records!"); resultBox.style.display = 'none'; } 
+                else {
+                    document.getElementById('resName').innerText = s.name;
+                    document.getElementById('resFather').innerText = s.father;
+                    document.getElementById('resTech').innerText = s.tech;
+                    document.getElementById('resYear').innerText = s.passingYear;
+                    document.getElementById('resInst').innerText = s.inst;
+                    document.getElementById('resMarks').innerText = s.marks;
+                    document.getElementById('resStatus').innerText = s.status;
+                    document.getElementById('resPhoto').src = s.photo;
+                    resultBox.style.display = 'block';
+                }
+            } else { alert("Roll Number Not Found!"); resultBox.style.display = 'none'; }
+            generateCaptcha();
+            document.getElementById('captchaInput').value = "";
+        }
+    </script>
+</body>
+</html>
